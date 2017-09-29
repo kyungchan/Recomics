@@ -1,0 +1,7 @@
+.text-shadow { text-shadow:#000000 2px 2px 7px, #000000 2px 2px 7px; }
+
+#mainbanner{
+	background-image: url(/img/banner.jpg);
+	background-size: cover;
+	background-position: center center;
+}
