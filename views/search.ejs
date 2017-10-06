@@ -12,8 +12,7 @@
     <link rel="stylesheet" href="stylesheets/style.css" />
   </head>
   <body>
-
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+	  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
 	  <div class="container">
 		  <a class="navbar-brand" href="/">Recomics</a>
 		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,39 +57,45 @@
 	  </div>
 	</nav>
 
-	<div class="container">
-		<div class="row regi">
-		<div class="col-xs-12 col-sm-2 col-md-3 col-sm-offset-2 col-md-offset-3"></div>
-		    <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-		    	<form role="form">
-					<h2 class="text-center">회원가입</h2>
-					<div class="form-group">
-		                      <input type="text" name="first_name" id="first_name" class="form-control input-lg" placeholder="Username" tabindex="1">
-					</div>
-					<div class="form-group">
-						<input type="id" name="email" id="email" class="form-control input-lg" placeholder="ID" tabindex="2">
-					</div>
-					<div class="row">
-						<div class="col-xs-12 col-sm-6 col-md-6">
-							<div class="form-group">
-								<input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password" tabindex="3">
-							</div>
-						</div>
-						<div class="col-xs-12 col-sm-6 col-md-6">
-							<div class="form-group">
-								<input type="password" name="password_confirmation" id="password_confirmation" class="form-control input-lg" placeholder="Confirm Password" tabindex="4">
-							</div>
-						</div>
-					</div>
-					<input type="submit" value="Register" class="btn btn-primary btn-block btn-lg" tabindex="5">
-				</form>
-			</div>
-			
-		<div class="col-xs-12 col-sm-2 col-md-3 col-sm-offset-2 col-md-offset-3"></div>
-		</div>
-	<hr>
+
+    <div class="container">
+    	<br>
+    	<h5><%= keyword %>의 검색결과</h5>
+    	<hr>
+    	<table class="table table-hover">
+		  <thead>
+		    <tr>
+		      <th>#</th>
+		      <th>작품명</th>
+		      <th>작가</th>
+		      <th>장르</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    <tr>
+		      <th scope="row">1</th>
+		      <td><%= keyword %> 1</td>
+		      <td>Otto</td>
+		      <td>@mdo</td>
+		    </tr>
+		    <tr>
+		      <th scope="row">2</th>
+		      <td><%= keyword %> 2</td>
+		      <td>Thornton</td>
+		      <td>@fat</td>
+		    </tr>
+		    <tr>
+		      <th scope="row">3</th>
+		      <td><%= keyword %> 3</td>
+		      <td>Matt</td>
+		      <td>@twitter</td>
+		    </tr>
+		  </tbody>
+		</table>
+      <hr>
+
       <footer>
         <p>&copy; 팀프로젝트 5조</p>
       </footer>
-	</div>
+    </div>
 </html>

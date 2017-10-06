@@ -32,6 +32,7 @@ app.get('/', routes.index);
 app.get('/explore', routes.explore);
 app.get('/recommend', routes.recommend);
 app.get('/register', routes.register);
+app.get('/search', routes.search);
 app.get('/users', user.list);
 
 http.createServer(app).listen(app.get('port'), function(){
