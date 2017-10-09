@@ -28,7 +28,6 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://team6:team123456@54.218.9.57:27017/recomics",  {
 	useMongoClient: true,
 });
