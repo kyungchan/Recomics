@@ -62,13 +62,13 @@
 		<div class="row regi">
 		<div class="col-xs-12 col-sm-2 col-md-3 col-sm-offset-2 col-md-offset-3"></div>
 		    <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-		    	<form role="form">
+		    	<form role="form" method="post">
 					<h2 class="text-center">회원가입</h2>
 					<div class="form-group">
-		                      <input type="text" name="first_name" id="first_name" class="form-control input-lg" placeholder="Username" tabindex="1">
+		                      <input type="text" name="name" class="form-control input-lg" placeholder="Username" tabindex="1">
 					</div>
 					<div class="form-group">
-						<input type="id" name="email" id="email" class="form-control input-lg" placeholder="ID" tabindex="2">
+						<input type="text" name="id" class="form-control input-lg" placeholder="ID" tabindex="2">
 					</div>
 					<div class="row">
 						<div class="col-xs-12 col-sm-6 col-md-6">
@@ -84,6 +84,15 @@
 					</div>
 					<input type="submit" value="Register" class="btn btn-primary btn-block btn-lg" tabindex="5">
 				</form>
+				<br>
+				<% if(length > 0) { %>
+				<div class="alert alert-danger" role="alert">
+					<% for(var i = 0; i < length; i++) { %>
+					<%= err_msg[i] %>
+					<br>
+					<% } %>
+				</div>
+				<% } %>
 			</div>
 			
 		<div class="col-xs-12 col-sm-2 col-md-3 col-sm-offset-2 col-md-offset-3"></div>

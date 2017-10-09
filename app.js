@@ -5,9 +5,9 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , user = require('./routes/user')
   , http = require('http')
-  , path = require('path');
+  , path = require('path')
+  , mongoose = require('mongoose');
 
 var app = express();
 
@@ -28,12 +28,23 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+mongoose.Promise = global.Promise;
+mongoose.connect("mongodb://team6:team123456@54.218.9.57:27017/recomics",  {
+	useMongoClient: true,
+});
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+	console.log("DB connected");
+});
+
 app.get('/', routes.index);
 app.get('/explore', routes.explore);
 app.get('/recommend', routes.recommend);
 app.get('/register', routes.register);
+app.post('/register', routes.registerpost);
 app.get('/search', routes.search);
-app.get('/users', user.list);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
