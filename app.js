@@ -28,11 +28,9 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-
-var databaseUrl = mongoose.connect("mongodb://team6:team123456@13.124.250.181:27017/recomics",  {
+mongoose.connect("mongodb://team6:team123456@54.218.9.57:27017/recomics",  {
 	useMongoClient: true,
 });
-
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -41,7 +39,6 @@ db.once('open', function() {
 });
 
 app.get('/', routes.index);
-app.post('/', routes.indexpost);
 app.get('/explore', routes.explore);
 app.get('/recommend', routes.recommend);
 app.get('/register', routes.register);
@@ -51,4 +48,3 @@ app.get('/search', routes.search);
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
-
