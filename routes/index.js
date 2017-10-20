@@ -1,10 +1,17 @@
 //GET라우팅
 
 var User = require('../models/Users');
+var Book = require('../models/Books');
 var passport = require("../config/passport");
+
+function getRandomInt(min, max) {
+	  return Math.floor(Math.random() * (max - min)) + min;
+	}
 
 exports.index = function(req, res) {
 	var success;
+	var bookCount = 0;
+	var idx1, idx2, idx3;
 	if (req.body.success == "true") {
 		success = "true";
 	} else if (req.body.success == "false") {
@@ -12,10 +19,28 @@ exports.index = function(req, res) {
 	} else {
 		success = "";
 	}
-	res.render('index', {
-		title : 'Recomics',
-		success : success
-	});
+
+	Book.count({}, function(err, count){
+		idx1 = getRandomInt(1, count);
+		idx2 = getRandomInt(1, count);
+		idx3= getRandomInt(1, count);
+		Book.find({$or: [
+			{index:idx1}, 
+			{index:idx2}, 
+			{index:idx3}
+			]
+		},function(err, books){
+			if(err){
+				res.send(err);
+			} else {
+				res.render('index', {
+					title : 'Recomics',
+					success : success,
+					books : books
+				});
+			}
+		});
+	});	
 };
 
 exports.explore = function(req, res) {
