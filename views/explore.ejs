@@ -78,53 +78,79 @@
 	<div class="container ">
 		<ul class="nav nav-pills nav-fill ">
 		  <li class="nav-item">
-		    <a class="nav-link active bg-secondary " href="#">장르별</a>
+		    <a class="nav-link active bg-secondary " href="explore?type=genre">장르별</a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link text-white" href="#">작가별</a>
+		    <a class="nav-link text-white" href="explore?type=author">작가별</a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link text-white" href="#">국가별</a>
+		    <a class="nav-link text-white" href="explore?type=country">국가별</a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link text-white" href="#">연재별</a>
+		    <a class="nav-link text-white" href="explore?type=end">연재별</a>
 		  </li>
 		</ul>
 		</div>
 	</div>
 	<div class="bg-secondary">
-	<div class="container ">
+	<div class="container">
 		<ul class="nav nav-tabs ">
 		  <li class="nav-item">
-		    <a class="nav-link active" href="#">개그</a>
+		    <a class="nav-link <% if(value=="코믹"){ %>active<% } else { %> text-white <% } %>" href="explore?type=genre&value=gag">코믹</a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link text-white" href="#">판타지</a>
+		    <a class="nav-link <% if(value=="판타지"){ %>active<% } else { %> text-white <% } %>" href="explore?type=genre&value=fantasy">판타지</a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link text-white" href="#">액션</a>
+		    <a class="nav-link <% if(value=="스포츠"){ %>active<% } else { %> text-white <% } %>" href="explore?type=genre&value=sports">스포츠</a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link text-white" href="#">드라마</a>
+		    <a class="nav-link <% if(value=="액션"){ %>active<% } else { %> text-white <% } %>" href="explore?type=genre&value=action">액션</a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link text-white" href="#">순정</a>
+		    <a class="nav-link <% if(value=="순정"){ %>active<% } else { %> text-white <% } %>" href="explore?type=genre&value=pure">순정</a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link text-white" href="#">스릴러</a>
+		    <a class="nav-link <% if(value=="웹툰"){ %>active<% } else { %> text-white <% } %>" href="explore?type=genre&value=webtoon">웹툰</a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link text-white" href="#">스포츠</a>
-		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link text-white" href="#">추리</a>
+		    <a class="nav-link <% if(value=="드라마"){ %>active<% } else { %> text-white <% } %>" href="explore?type=genre&value=drama">드라마</a>
 		  </li>
 		</ul>
 		</div>
 	</div>
 	<div class="container">
-	<h1 class="display-1">Content</h1>
-	<hr>
+		<div class="text-right">이름순</div>
+		<div class="container-fluid">
+		    <div class="row">
+		    	<% for(var i = 0; i<count; i++){ %>
+		        <div class="col-xs-12 col-sm-6 col-md-3">
+					<table class="book-table" style="height: 100px;">
+					  <tr>
+					    <th rowspan=5><img src="/img/bookcover/<%=books[i].index%>.jpg"></th>
+					  </tr>
+					  <tr>
+					    <td class="align-middle">
+						    <strong><%=books[i].title%></strong>
+						    <br>
+						    <div class="text-secondary">
+							    <%=books[i].author%>
+							    <br>
+							    <%=books[i].country%>
+							    <br>
+							    <%=books[i].genre1%><% if(books[i].genre2) {%>/<%=books[i].genre2%><% } %><% if(books[i].genre3) {%>/<%=books[i].genre3%><% } %>
+						    </div>
+					    </td>
+					  </tr>
+					</table>
+		        </div>
+		        <% } %>
+		    </div>
+		    <a style="display:scroll; position:fixed; bottom:10px; right:20px;" href="#">
+	     		<p style="padding:10px; color:#fff;" class="bg-dark img-circle">∧</p>
+			</a>
+		</div>
+		<hr>
       <footer>
         <p>&copy; 팀프로젝트 5조</p>
       </footer>

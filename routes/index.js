@@ -44,9 +44,53 @@ exports.index = function(req, res) {
 };
 
 exports.explore = function(req, res) {
-	res.render('explore', {
-		title : 'Recomics'
-	});
+	var type = "genre";
+	var value = "코믹";
+	switch(req.query.value){
+	case "gag":
+		value="코믹";break;
+	case "fantasy":
+		value="판타지";break;
+	case "sports":
+		value="스포츠";break;
+	case "action":
+		value="액션";break;
+	case "pure":
+		value="순정";break;
+	case "webtoon":
+		value="웹툰";break;
+	case "drama":
+		value="드라마";break;
+	}
+	switch(type){
+	case "genre":
+		Book.find({$or:[
+			{genre1: value},
+			{genre2: value},
+			{genre3: value}
+		]
+		}).count({}, function(err, count){
+			if(!err){
+				Book.find({$or:[
+					{genre1: value},
+					{genre2: value},
+					{genre3: value}
+				]}, function(err, books){
+					if(!err){
+						console.log(books);
+						console.log(type + value + count);
+						res.render('explore', {
+							title : 'Recomics',
+							books: books,
+							type: type,
+							value: value,
+							count: count
+						});
+					}
+				});
+			}
+		});
+	}
 };
 
 exports.recommend = function(req, res) {

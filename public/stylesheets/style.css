@@ -15,8 +15,21 @@
 	margin: 50px auto;
 }
 
+/*explore*/
+
+.book-table{
+	font-size: 9pt;
+	word-break: break-all;
+}
+.book-table img{
+	margin: 15px 0;
+	width: 80px;
+	height: 100px;
+}
+
+
 /*search*/
-    #custom-search-form {
+#custom-search-form {
         margin:0;
         margin-top: 5px;
         padding: 0;
