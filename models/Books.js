@@ -8,8 +8,8 @@ var Schema = new mongoose.Schema({
     genre3: {type: String},
     author: {type: String},
     country: {type: String},
-    adult: {type: Boolean},
-    end: {type: Boolean},
+    adult: {type: String},
+    end: {type: String},
     file: {type: String}
 });
 

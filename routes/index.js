@@ -44,40 +44,15 @@ exports.index = function(req, res) {
 };
 
 exports.explore = function(req, res) {
-	var type = "genre";
-	var value = "코믹";
-	switch(req.query.value){
-	case "gag":
-		value="코믹";break;
-	case "fantasy":
-		value="판타지";break;
-	case "sports":
-		value="스포츠";break;
-	case "action":
-		value="액션";break;
-	case "pure":
-		value="순정";break;
-	case "webtoon":
-		value="웹툰";break;
-	case "drama":
-		value="드라마";break;
-	}
+	var type = req.query.type || "genre";
+	var value;
 	switch(type){
 	case "genre":
-		Book.find({$or:[
-			{genre1: value},
-			{genre2: value},
-			{genre3: value}
-		]
-		}).count({}, function(err, count){
+		value = req.query.value || "Action";
+		Book.find({genre: value}).count({}, function(err, count){
 			if(!err){
-				Book.find({$or:[
-					{genre1: value},
-					{genre2: value},
-					{genre3: value}
-				]}, function(err, books){
+				Book.find({genre: value}, function(err, books){
 					if(!err){
-						console.log(books);
 						console.log(type + value + count);
 						res.render('explore', {
 							title : 'Recomics',
@@ -90,6 +65,46 @@ exports.explore = function(req, res) {
 				});
 			}
 		});
+		break;
+	case "country":
+		value = req.query.value || "kor";
+		Book.find({country: value}).count({}, function(err, count){
+			if(!err){
+				Book.find({country: value}, function(err, books){
+					if(!err){
+						console.log(type + value + count);
+						res.render('explore', {
+							title : 'Recomics',
+							books: books,
+							type: type,
+							value: value,
+							count: count
+						});
+					}
+				});
+			}
+		});
+		break;
+	case "end":
+		value = req.query.value || "0";
+		Book.find({end: value}).count({}, function(err, count){
+			if(!err){
+				Book.find({end: value}, function(err, books){
+					if(!err){
+						console.log(type + value + count);
+						res.render('explore', {
+							title : 'Recomics',
+							books: books,
+							type: type,
+							value: value,
+							count: count
+						});
+					}
+				});
+			}
+		});
+		
+		break;
 	}
 };
 
@@ -117,6 +132,16 @@ exports.register = function(req, res) {
 	});
 };
 
+exports.mypage = function(req, res) {
+	if(req.isAuthenticated()){
+		res.render('mypage', {
+			title : 'Recomics'
+		});
+	} else {
+		res.send("잘못된 접근");
+	}
+};
+
 exports.search = function(req, res) {
 	var keyword = req.query.keyword;
 	res.render('search', {
@@ -128,6 +153,21 @@ exports.search = function(req, res) {
 exports.logout = function(req, res) {
 	req.logout();
 	res.redirect("/");
+};
+
+exports.signout = function(req, res) { // 탈퇴
+	if(req.isAuthenticated()){
+		User.remove({id:req.user.id, createdAt:req.user.createdAt}, function(err, result){
+			if(err){
+				res.send(err);
+			}else{
+				req.logout();
+				res.redirect("/");
+			}
+		});
+	} else {
+		res.send("잘못된 접근");
+	}
 };
 
 // Post 라우팅
