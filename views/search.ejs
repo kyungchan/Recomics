@@ -77,36 +77,42 @@
 
     <div class="container">
     	<br>
-    	<h5><%= keyword %>의 검색결과</h5>
+    	<h5>&quot<%= keyword %>&quot의 검색결과 (<%=length%>건)</h5>
     	<hr>
     	<table class="table table-hover">
 		  <thead>
 		    <tr>
 		      <th>#</th>
+		      <th>표지</th>
 		      <th>작품명</th>
 		      <th>작가</th>
 		      <th>장르</th>
 		    </tr>
 		  </thead>
 		  <tbody>
-		    <tr>
-		      <th scope="row">1</th>
-		      <td><%= keyword %> 1</td>
-		      <td>Otto</td>
-		      <td>@mdo</td>
+		  <% for(var i=0; i<length; i++){ %>
+		  
+		    <tr onclick="location.href='/bookinfo?book_id=<%=result[i].index%>'" style="cursor:pointer;" >
+		    
+		      <th scope="row"><%=i+1%></th>
+		      <td><img style="height: 50px" src="/img/bookcover/<%=result[i].index%>.jpg"></td>
+		      <td><%= result[i].title %></td>
+		      <td><%= result[i].author %></td>
+		      <td><% if (result[i].genre=="Action"){ %>액션
+							    <% } else if (result[i].genre=="Comic"){ %>코믹
+							    <% } else if (result[i].genre=="Cooking"){ %>요리
+							    <% } else if (result[i].genre=="Daylife"){ %>일상
+							    <% } else if (result[i].genre=="Drama"){ %>드라마
+							    <% } else if (result[i].genre=="Fantasy"){ %>판타지
+							    <% } else if (result[i].genre=="Gamble"){ %>도박
+							    <% } else if (result[i].genre=="Heroism"){ %>무협
+							    <% } else if (result[i].genre=="Pure"){ %>순정
+							    <% } else if (result[i].genre=="SF"){ %>SF
+							    <% } else if (result[i].genre=="Sports"){ %>스포츠
+							    <% } else if (result[i].genre=="Thriller"){ %>스릴러 
+							    <% } %></td>
 		    </tr>
-		    <tr>
-		      <th scope="row">2</th>
-		      <td><%= keyword %> 2</td>
-		      <td>Thornton</td>
-		      <td>@fat</td>
-		    </tr>
-		    <tr>
-		      <th scope="row">3</th>
-		      <td><%= keyword %> 3</td>
-		      <td>Matt</td>
-		      <td>@twitter</td>
-		    </tr>
+		    <%}%>
 		  </tbody>
 		</table>
       <hr>

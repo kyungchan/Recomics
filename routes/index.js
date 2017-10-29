@@ -114,6 +114,20 @@ exports.recommend = function(req, res) {
 	});
 };
 
+exports.bookinfo = function(req, res) {
+	Book.find({index: req.query.book_id}, function(err, book){
+		if(!err && book!=""){
+			console.log(book);
+			res.render('bookinfo', {
+				title : 'Recomics',
+				book: book
+			});
+		} else {
+			res.send("잘못된 접근");
+		}
+	});
+};
+
 exports.login = function(req, res) {
 	var length = req.flash("length")[0] || {};
 	var err_msg = req.flash("err_msg");
@@ -144,10 +158,21 @@ exports.mypage = function(req, res) {
 
 exports.search = function(req, res) {
 	var keyword = req.query.keyword;
-	res.render('search', {
-		title : 'Recomics',
-		keyword : keyword
+	Book.find({"$text": {"$search":keyword}},function(err, result){
+		if(!err){
+			console.log(result);
+			var length = result.length;
+			res.render('search', {
+				title : 'Recomics',
+				keyword: keyword,
+				length: length,
+				result : result
+			});
+		} else {
+			res.send("검색 오류" + err);
+		}
 	});
+
 };
 
 exports.logout = function(req, res) {
@@ -187,7 +212,7 @@ exports.registerpost = function(req, res) {
 		length++;
 	}
 	if (req.body.password != req.body.password_confirmation) {
-		req.flash("err_msg", "Password가 일치하지 않습니다.");
+		req.flash("err_msg", "Password 확인이 일치하지 않습니다.");
 		length++;
 	}
 	if (length == 0) {
@@ -198,8 +223,13 @@ exports.registerpost = function(req, res) {
 		user.save(function(err) {
 			if (err) {
 				console.log(err);
-				req.flash("success", "false");
-				res.redirect('/');
+				req.flash("err_msg", "중복된 ID를 입력했습니다.");
+				length++;
+				res.render('register', {
+					title : 'Recomics',
+					err_msg : req.flash("err_msg"),
+					length : length
+				});
 			} else {
 				console.log("Registration Success ID : " + req.body.name);
 				req.flash("success", "true");

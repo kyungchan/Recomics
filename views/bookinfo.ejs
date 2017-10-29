@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title><%= title %></title>
+    
+    
+	<script type="text/javascript">
+		function confirm2(){
+			x = confirm("정말 탈퇴하시겠습니까?");
+			if(x){
+				location.href="/signout";
+			}
+		}
+	</script>
+    
+ 	<script src="modules/jquery/dist/jquery.js" type="text/javascript"></script>
+ 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+ 	<script src="bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="stylesheets/style.css" />
+  </head>
+  <body>
+
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+	  <div class="container">
+		  <a class="navbar-brand" href="/">Recomics</a>
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		  </button>
+		
+		  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+		    <ul class="navbar-nav mr-auto">
+		      <li class="nav-item">
+		        <a class="nav-link"  href="/recommend">만화추천</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="/explore">만화검색</a>
+		      </li>
+		    </ul>
+		    
+		<div class="col-sm-3 col-md-3">
+	        <form class="navbar-form" role="search"  action="/search">
+	        <div class="input-group">
+	            <input type="text" class="form-control" placeholder="Search" name="keyword">
+	            <div class="input-group-btn">
+	                <button class="btn btn-default" type="submit"><img src="/img/search.png"></button>
+	            </div>
+	        </div>
+	        </form>
+	    </div>
+		    
+		    <ul class="navbar-nav">
+			  
+			  <% if(isAuthenticated){ %>
+			 
+			  </li>
+			  <li><a href="/mypage" class="nav-link navbar-dark"><div><img src='/img/person.png'> <%= currentUser.name %></div></a></li>
+			  <li><a href="/logout"  class="nav-link navbar-dark">Logout</a></li>
+			  <% } else { %>
+			     <a href="#" data-toggle="modal" class="nav-link navbar-dark " data-target="#login-modal">Login</a>
+				
+			  </ul>
+			  <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+	    		  <div class="modal-dialog">
+					<div class="loginmodal-container">
+						<h1>로그인</h1><br>
+					  <form method="post" action="/login">
+						<input id="validationDefault01" type="text" name="id" placeholder="ID" required>
+						<input id="validationDefault02" type="password" name="password" placeholder="Password" required>
+						<input type="submit" name="login" class="login loginmodal-submit" value="Login">
+					  </form>
+						
+					  <div class="login-help">
+						<a href="/register">회원가입</a>
+					  </div>
+					</div>
+				</div>
+			  </div>
+    <% } %>
+			  
+			  
+		  </div>
+	  </div>
+	</nav>
+
+	<div class="container">
+		<div class="card col-md-10 col-lg-8" style="margin:50px auto;">
+		  <div class="card-body">
+		   
+            <h3><%=book[0].title%></h3>
+            <% if(isAuthenticated){ %>
+            <div class="acidjs-rating-stars">
+                <form>
+                    <input type="radio" name="group-2" id="group-2-0" value="5" /><label for="group-2-0"></label><!--
+                    --><input type="radio" name="group-2" id="group-2-1" value="4" /><label for="group-2-1"></label><!--
+                    --><input type="radio" checked="checked" name="group-2" id="group-2-2" value="3" /><label for="group-2-2"></label><!--
+                    --><input type="radio" name="group-2" id="group-2-3" value="2" /><label for="group-2-3"></label><!--
+                    --><input type="radio" name="group-2" id="group-2-4"  value="1" /><label for="group-2-4"></label>
+                </form>
+            </div>
+            <% } %>
+            <hr>
+            <table>
+            	<tr>
+            		<td rowspan="6"><img src="/img/bookcover/<%=book[0].index%>.jpg" style="height: 200px; margin-right:10px;"></td>
+            	</tr>
+            	<tr>
+            		<td>작가 : <%=book[0].author %></td>
+            	</tr>
+            	<tr>
+            		<td>국가 : 
+            					<% if (book[0].country=="kor"){ %>한국
+							    <% } else if (book[0].country=="jpn"){ %>일본
+							    <% } else if (book[0].country=="usa"){ %>미국
+							    <% } else if (book[0].country=="nl"){ %>네덜란드
+							    <% } else if (book[0].country=="eng"){ %>영국
+							    <% } else if (book[0].country=="fr"){ %>프랑스<% } %></td>
+            	</tr>
+            	<tr>            	
+            		<td>장르 : 
+							    <% if (book[0].genre=="Action"){ %>액션
+							    <% } else if (book[0].genre=="Comic"){ %>코믹
+							    <% } else if (book[0].genre=="Cooking"){ %>요리
+							    <% } else if (book[0].genre=="Daylife"){ %>일상
+							    <% } else if (book[0].genre=="Drama"){ %>드라마
+							    <% } else if (book[0].genre=="Fantasy"){ %>판타지
+							    <% } else if (book[0].genre=="Gamble"){ %>도박
+							    <% } else if (book[0].genre=="Heroism"){ %>무협
+							    <% } else if (book[0].genre=="Pure"){ %>순정
+							    <% } else if (book[0].genre=="SF"){ %>SF
+							    <% } else if (book[0].genre=="Sports"){ %>스포츠
+							    <% } else if (book[0].genre=="Thriller"){ %>스릴러 
+							    <% } %></td>
+            	</tr>
+            	<tr>
+            		<td>완결 : <% if(book[0].end=="1"){ %>
+            					완결 <%} else { %>
+            					연재중 <% } %>
+            		</td>
+            	</tr>
+            	<tr>
+            		<td>성인 : <% if(book[0].adult=="1"){ %>
+            					O <%} else { %>
+            					X <% } %></td>
+            	</tr>
+            </table>
+           
+		</div>
+	</div>
+		<hr>
+		<footer>
+	        <p>&copy; 팀프로젝트 5조</p>
+	    </footer>
+	</div>
+</html>

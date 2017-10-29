@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var Schema = new mongoose.Schema({
 	index: {type: Number, unique: true},
     title: {type: String},
-    genre1: {type: String},
+    genre: {type: String},
     genre2: {type: String},
     genre3: {type: String},
     author: {type: String},
