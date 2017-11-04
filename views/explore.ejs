@@ -162,7 +162,17 @@
 		</div>
 	</div>
 	<div class="container">
-		<div class="text-right">이름순</div>
+	
+		<div class="text-right"><a href="/explore?type=<%=type%>&value=<%=value%>&sort=<% if(sort=="titleasc"){ %>titledsc<% }else{ %>titleasc<% } %>" 
+		class=<% if(sort=="titleasc" || sort=="titledsc"){ %> "text-primary"<% }else{ %> "text-secondary"<% } %>><% if(sort=="titleasc"){ %>제목순↑
+		<% }else if(sort=="titledsc"){ %>제목순↓<% }else{ %>제목순<%}%></a>
+		<a href="/explore?type=<%=type%>&value=<%=value%>&sort=<% if(sort=="addasc"){ %>adddsc<% }else{ %>addasc<% } %>" 
+		class=<% if(sort=="addasc" || sort=="adddsc"){ %> "text-primary"<% }else{ %> "text-secondary"<% } %>><% if(sort=="addasc"){ %>등록순↑<% }else if(sort=="adddsc"){ %>등록순↓
+		<% }else{ %>등록순<%}%></a>
+		<a href="/explore?type=<%=type%>&value=<%=value%>&sort=<% if(sort=="authasc"){ %>authdsc<% }else{ %>authasc<% } %>" 
+		class=<% if(sort=="authasc" || sort=="authdsc"){ %> "text-primary"<% }else{ %> "text-secondary"<% } %>><% if(sort=="authasc"){ %>작가순↑<% }else if(sort=="authdsc"){ %>작가순↓
+		<% }else{ %>작가순<%}%></a>
+		</div>
 		<div class="container-fluid">
 		    <div class="row">
 		    	<% for(var i = 0; i<count; i++){ %>
@@ -185,18 +195,18 @@
 							    <% } else if (books[i].country=="eng"){ %>영국
 							    <% } else if (books[i].country=="fr"){ %>프랑스<% } %>
 							    <br>
-							    <% if (books[i].genre1=="Action"){ %>액션
-							    <% } else if (books[i].genre1=="Comic"){ %>코믹
-							    <% } else if (books[i].genre1=="Cooking"){ %>요리
-							    <% } else if (books[i].genre1=="Daylife"){ %>일상
-							    <% } else if (books[i].genre1=="Drama"){ %>드라마
-							    <% } else if (books[i].genre1=="Fantasy"){ %>판타지
-							    <% } else if (books[i].genre1=="Gamble"){ %>도박
-							    <% } else if (books[i].genre1=="Heroism"){ %>무협
-							    <% } else if (books[i].genre1=="Pure"){ %>순정
-							    <% } else if (books[i].genre1=="SF"){ %>SF
-							    <% } else if (books[i].genre1=="Sports"){ %>스포츠
-							    <% } else if (books[i].genre1=="Thriller"){ %>스릴러 
+							    <% if (books[i].genre=="Action"){ %>액션
+							    <% } else if (books[i].genre=="Comic"){ %>코믹
+							    <% } else if (books[i].genre=="Cooking"){ %>요리
+							    <% } else if (books[i].genre=="Daylife"){ %>일상
+							    <% } else if (books[i].genre=="Drama"){ %>드라마
+							    <% } else if (books[i].genre=="Fantasy"){ %>판타지
+							    <% } else if (books[i].genre=="Gamble"){ %>도박
+							    <% } else if (books[i].genre=="Heroism"){ %>무협
+							    <% } else if (books[i].genre=="Pure"){ %>순정
+							    <% } else if (books[i].genre=="SF"){ %>SF
+							    <% } else if (books[i].genre=="Sports"){ %>스포츠
+							    <% } else if (books[i].genre=="Thriller"){ %>스릴러 
 							    <% } %>
 							    <!--  <% if(books[i].genre2) {%>/<%=books[i].genre2%><% } %><% if(books[i].genre3) {%>/<%=books[i].genre3%><% } %>-->
 						    </div>
@@ -206,13 +216,30 @@
 		        </div>
 		        <% } %>
 		    </div>
-		    <a style="display:scroll; position:fixed; bottom:10px; right:20px;" href="#">
-	     		<p style="padding:10px; color:#fff;" class="bg-dark img-circle">∧</p>
-			</a>
+		   		<a style="display:scroll; position:fixed; bottom:55px; right:20px; width:30px;" href="#">
+					<p style="padding:10px; color:#fff;" class="bg-dark img-circle">∧</p>
+				</a>
+				<a style="display:scroll; position:fixed; bottom:10px; right:20px; width:30px;" href="#">
+					<p data-toggle="modal" data-target="#tallModal" style="padding:10px; color:#fff;" class="bg-dark img-circle">?</p>
+				</a>
 		</div>
 		<hr>
       <footer>
         <p>&copy; 팀프로젝트 5조</p>
       </footer>
 	</div>
+	
+<div id="tallModal" class="modal modal-wide fade">
+  <div class="modal-dialog">
+    <div class="modal-content" style="width:140%; left:-100px;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">help</h4>
+      </div>
+      <div class="modal-body">
+        <img src="/img/help/explorehelp.jpg" style="width:100%">
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 </html>

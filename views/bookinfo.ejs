@@ -92,14 +92,20 @@
             <h3><%=book[0].title%></h3>
             <% if(isAuthenticated){ %>
             <div class="acidjs-rating-stars">
-                <form>
-                    <input type="radio" name="group-2" id="group-2-0" value="5" /><label for="group-2-0"></label><!--
-                    --><input type="radio" name="group-2" id="group-2-1" value="4" /><label for="group-2-1"></label><!--
-                    --><input type="radio" checked="checked" name="group-2" id="group-2-2" value="3" /><label for="group-2-2"></label><!--
-                    --><input type="radio" name="group-2" id="group-2-3" value="2" /><label for="group-2-3"></label><!--
-                    --><input type="radio" name="group-2" id="group-2-4"  value="1" /><label for="group-2-4"></label>
+                <form action="/rating">
+	                <div>
+	                    <input type="radio" <% if(rate == 5){ %> checked="checked" <%}%>name="rate" id="group-2-0" value="5" /><label for="group-2-0"></label>
+	                    <input type="radio" <% if(rate == 4){ %> checked="checked" <%}%>name="rate" id="group-2-1" value="4" /><label for="group-2-1"></label>
+	                    <input type="radio" <% if(rate == 3){ %> checked="checked" <%}%>name="rate" id="group-2-2" value="3" /><label for="group-2-2"></label>
+	                    <input type="radio" <% if(rate == 2){ %> checked="checked" <%}%>name="rate" id="group-2-3" value="2" /><label for="group-2-3"></label>
+	                    <input type="radio" <% if(rate == 1 || rate == 0){ %> checked="checked" <%}%> name="rate" id="group-2-4"  value="1" /><label for="group-2-4"></label>
+	                    <input type="hidden" name="bookId" value="<%=book[0].index%>">
+	                    <input type="hidden" name="genre" value="<%=book[0].genre%>">
+	                    <input type="hidden" name="before" value="<%=rate%>">
+	                </div>
+	                <button type="submit" class="btn btn-secondary">적용</button>
                 </form>
-            </div>
+            </div>                
             <% } %>
             <hr>
             <table>

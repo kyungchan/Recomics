@@ -181,6 +181,14 @@
     background:transparent;
 }
 
+.modal.modal-wide .modal-dialog {
+  width: 90%;
+}
+.modal-wide .modal-body {
+  overflow-y: auto;
+}
+
+#tallModal .modal-body p { margin-bottom: 900px }
 /*bookinfo*/
 
 .acidjs-rating-stars,
@@ -195,13 +203,13 @@
     color: #189800;
 }
 
-.acidjs-rating-stars *
+.acidjs-rating-stars input
 {
     margin: 0;
     padding: 0;
 }
 
-.acidjs-rating-stars input
+.acidjs-rating-stars div input
 {
     display: none;
 }
@@ -215,6 +223,13 @@
 .acidjs-rating-stars label
 {
     color: #ccc;
+}
+
+.acidjs-rating-stars button
+{
+	position: absolute;
+	top: 60px;
+	left: 210px;
 }
 
 .acidjs-rating-stars label::before

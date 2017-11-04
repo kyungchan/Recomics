@@ -68,6 +68,8 @@ app.get('/mypage', routes.mypage);
 app.get('/logout', routes.logout);
 app.get('/signout', routes.signout);
 app.get('/bookinfo', routes.bookinfo);
+app.get('/test', routes.test);
+app.get('/rating', routes.rating);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
