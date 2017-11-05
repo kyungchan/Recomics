@@ -332,7 +332,6 @@ exports.recommend = function(req, res) {
 						weight[i] = 1;
 					totalWeight += weight[i];
 				}
-0
 				var recomdAry = [];
 				var recomdBst = new BST();
 				var size=12;
@@ -443,20 +442,18 @@ exports.recommend = function(req, res) {
 
 
 exports.rating = function(req, res){
-	var rate = req.query.rate;
-	var bookId = req.query.bookId;
-	var genre = req.query.genre;
-	var beforeRate = req.query.before;
-	var _id = req.query._id;
+	var rate = req.body.rate;
+	var bookId = req.body.bookId;
+	var genre = req.body.genre;
+	var beforeRate = req.body.before;
+	console.log(rate + genre);
 	if (rate >= 1 && rate <= 5){
 		Rate.update({userId: req.user.id, bookId: bookId, genre: genre}, {$set : {rate: rate}}, {upsert: true}, function(err){
 			if(!err){
 				var jsonString = '{"$inc": {"rate' + genre + '":' + (rate-beforeRate) + '}}';
 				User.update({id: req.user.id}, JSON.parse(jsonString), function(err){
 					if(!err){
-						console.log(jsonString);
-						console.log(JSON.parse(jsonString))
-						res.redirect("/bookinfo?book_id="+bookId);
+						res.send({result:true});
 					} else {
 						res.send("잘못된 접근" + err);
 					}
