@@ -103,7 +103,7 @@
 	<% if(isAuthenticated){ %>
 		<br>
 		<h1>추천만화</h1>
-		<h6 class="text-secondary">사용자의 평점을 기준으로 최대 12개의 만화를 추천합니다.</h6>
+		<h6 class="text-secondary">사용자의 평점을 기준으로 만화를 추천합니다.</h6>
 		<div class="container-fluid">
 		    <div class="row">
 		    	<% for(var i = 0; i<countRcmd; i++){ %>
@@ -184,12 +184,22 @@
         <p>&copy; 팀프로젝트 5조</p>
       </footer>
 	</div>
-	</div>
-	
-		<a style="display:scroll; position:fixed; bottom:55px; right:20px; width:30px;" href="#">
+	</div><a style="display:scroll; position:fixed; bottom:55px; right:20px; width:30px;" href="#">
 			<p style="padding:10px; color:#fff;" class="bg-dark img-circle">∧</p>
 		</a>
 		<a style="display:scroll; position:fixed; bottom:10px; right:20px; width:30px;" href="#">
-			<p style="padding:10px; color:#fff;" class="bg-dark img-circle">?</p>
+			<p data-toggle="modal" data-target="#tallModal" style="padding:10px; color:#fff;" class="bg-dark img-circle">?</p>
 		</a>
-</html>
+		<div id="tallModal" class="modal modal-wide fade">
+  <div class="modal-dialog">
+    <div class="modal-content" style="width:140%; left:-100px;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">help</h4>
+      </div>
+      <div class="modal-body">
+        <img src="/img/help/recommendhelp.jpg" style="width:100%">
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal --></html>

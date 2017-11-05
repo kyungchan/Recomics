@@ -87,19 +87,73 @@
 
 	<div class="container">
 		<div class="card col-md-10 col-lg-8" style="margin:50px auto;">
-		  <div class="card-body">
+			<div class="card-body">
 		    <h4 class="card-title"><%= currentUser.id %></h4>
+		<% if(mode == "chgPass"){ %>
+			<h6 class="card-subtitle mb-2 text-muted">비밀번호 변경</h6>
+			<hr>
+			<form method="post">
+				<div class="col-xs-12 col-sm-12 col-md-12">
+					<input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password" tabindex="1" required>
+				</div>
+				<div class="col-xs-12 col-sm-12 col-md-12">
+					<input type="password" name="password_confirmation" id="password_confirmation" class="form-control input-lg" placeholder="Confirm Password" tabindex="2" required>
+				</div>
+				<input type="hidden" name="mode" value="chgPass">
+				<input style="margin: 0 auto;"type="submit" value="적용" class="btn btn-primary btn-block btn-lg col-md-5 col-sm-5" tabindex="3">
+			</form>
+			<br>
+			<% if( length > 0 ) { %>
+				<div class="alert alert-danger" role="alert">
+					<% for(var i = 0; i < length; i++) { %>
+					<%= err_msg[i] %>
+					<br>
+					<% } %>
+				</div>
+				<% } %>
+		<% } else if(mode == "chgNick") { %>
+			<h6 class="card-subtitle mb-2 text-muted">닉네임 변경</h6>
+			<hr>
+			<form method="post">
+				<div class="form-group">
+	                <input id="validationDefault01" type="text" name="nickName" class="form-control input-lg" placeholder="닉네임" tabindex="1" required>
+				</div>
+				<input type="hidden" name="mode" value="chgNick">
+				<input style="margin: 0 auto;"type="submit" value="적용" class="btn btn-primary btn-block btn-lg col-md-5 col-sm-5" tabindex="2">
+			</form>
+		<% } else { %>
 		    <h6 class="card-subtitle mb-2 text-muted">회원정보</h6>
 		    <hr>
-		    <p class="card-text"><strong>닉네임</strong> : <%= currentUser.name %>  <a href="#" class="card-link">변경</a><br>
-		    <strong>비밀번호</strong> : ******** <a href="#" class="card-link">변경</a><br>
+		    <p class="card-text"><strong>닉네임</strong> : <%= currentUser.name %>  <a href="/mypage?mode=chgNick"" class="card-link">변경</a><br>
+		    <strong>비밀번호</strong> : ******** <a href="/mypage?mode=chgPass" class="card-link">변경</a><br>
 		    <strong>가입일</strong> : <%= currentUser.createdAt %><br>
 		    <strong>평가한 만화</strong> : <%=rates%></p>
 		    <hr>
 		    <div class="text-right"><a onclick="confirm2()" href="#" class="card-link">회원탈퇴</a></div>
+		<% } %>
 		  </div>
 		</div>
+		
 		<hr>
+		<a style="display:scroll; position:fixed; bottom:55px; right:20px; width:30px;" href="#">
+			<p style="padding:10px; color:#fff;" class="bg-dark img-circle">∧</p>
+		</a>
+		<a style="display:scroll; position:fixed; bottom:10px; right:20px; width:30px;" href="#">
+			<p data-toggle="modal" data-target="#tallModal" style="padding:10px; color:#fff;" class="bg-dark img-circle">?</p>
+		</a>
+		<div id="tallModal" class="modal modal-wide fade">
+  <div class="modal-dialog">
+    <div class="modal-content" style="width:140%; left:-100px;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">help</h4>
+      </div>
+      <div class="modal-body">
+        <img src="/img/help/mypagehelp.jpg" style="width:100%">
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 		<footer>
 	        <p>&copy; 팀프로젝트 5조</p>
 	    </footer>

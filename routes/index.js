@@ -72,8 +72,7 @@ exports.test = function(req, res){
 	console.log(jsonString);
 	var jsonObject = JSON.parse(jsonString);
 	console.log(jsonObject);
-	
-	User.find(jsonObject, function(err, result){
+	Book.aggregate([{$match:{genre : "Action"}},{$sample:{size:3}}]).exec(function(err, result){
 		res.send(result);
 	});
 	
@@ -336,8 +335,56 @@ exports.recommend = function(req, res) {
 0
 				var recomdAry = [];
 				var recomdBst = new BST();
+				var size=12;
+				console.log(size);
 				var jsonString = "{\"genre\":\"" + rankAry[0][2].substr(4)+"\"}";
-				Book.find(JSON.parse(jsonString)).limit(12*weight[0]/totalWeight).skip(getRandomInt(0, 5)).exec(function(err, result){
+				Book.aggregate([{$match:{genre : rankAry[0][2].substr(4)}},{$sample:{size:size*weight[0]/totalWeight}}]).exec(function(err, result){
+					for(var i = 0; i<result.length; i++){
+						recomdAry.push(result[i]);
+					}
+					size -= result.length;
+					totalWeight -= weight[0];
+					console.log(size);
+					Book.aggregate([{$match:{genre : rankAry[1][2].substr(4)}},{$sample:{size:size*weight[1]/totalWeight}}]).exec(function(err, result){
+						for(var i = 0; i<result.length; i++){
+							recomdAry.push(result[i]);
+						}
+						size -= result.length;
+						totalWeight -= weight[1];
+						console.log(size);
+						Book.aggregate([{$match:{genre : rankAry[2][2].substr(4)}},{$sample:{size:size*weight[2]/totalWeight}}]).exec(function(err, result){
+							for(var i = 0; i<result.length; i++){
+								recomdAry.push(result[i]);
+							}
+							size -= result.length;
+							totalWeight -= weight[2];
+							console.log(size);
+							Book.aggregate([{$match:{genre : rankAry[3][2].substr(4)}},{$sample:{size:size*weight[3]/totalWeight}}]).exec(function(err, result){
+								for(var i = 0; i<result.length; i++){
+									recomdAry.push(result[i]);
+								}
+								size -= result.length;
+								totalWeight -= weight[3];
+								console.log(size);
+								Book.aggregate([{$match:{genre : rankAry[4][2].substr(4)}},{$sample:{size:size*weight[4]/totalWeight}}]).exec(function(err, result){
+									for(var i = 0; i<result.length; i++){
+										recomdAry.push(result[i]);
+									}
+									Rate.count({userId: req.user.id}, function(err, result){
+										res.render('recommend', {
+											title : 'Recomics',
+											rank : rankAry,
+											rcmd : recomdAry,
+											countRcmd : recomdAry.length,
+											countRate : result
+										});
+									});
+								});
+							});
+						});
+					});
+				});
+			/*	Book.find(JSON.parse(jsonString)).limit(12*weight[0]/totalWeight).skip(getRandomInt(0, 5)).exec(function(err, result){
 					for(var i = 0; i<result.length; i++){
 						recomdAry.push(result[i]);
 						//recomdBst.insert(rankAry[0][1], result[i], 0)
@@ -384,7 +431,7 @@ exports.recommend = function(req, res) {
 							});
 						});
 					});
-				});
+				});*/
 			}
 		});
 	} else {
@@ -471,10 +518,13 @@ exports.register = function(req, res) {
 
 exports.mypage = function(req, res) {
 	if(req.isAuthenticated()){
+		var mode = req.query.mode || "";
 		Rate.count({userId: req.user.id}, function(err, result){
 			res.render('mypage', {
 				title : 'Recomics',
-				rates : result
+				rates : result,
+				mode : mode,
+				length : 0
 			});
 		});
 	} else {
@@ -582,3 +632,40 @@ exports.loginpost = passport.authenticate("local-login", {
 	  failureRedirect : "/login",
 	  failureFlash : true
 });
+
+exports.mypagepost = function(req, res){
+	var length = 0;
+	var mode = req.body.mode || "";
+	if (mode == "chgNick"){
+		User.update({id:req.user.id, createdAt:req.user.createdAt}, {$set: {name:req.body.nickName}}, function(err, result){
+			if(!err){
+				console.log("1");
+				res.redirect("/mypage");
+			} else {
+				res.send("잘못된 접근" + err);
+			}
+		});
+	} else if (mode == "chgPass") {
+		if(req.body.password == req.body.password_confirmation){
+			User.update({id:req.user.id, createdAt:req.user.createdAt}, {$set: {password:req.body.password}}, function(err, result){
+				if(!err){
+					console.log("1");
+					res.redirect("/mypage");
+				} else {
+					res.send("잘못된 접근" + err);
+				}
+			});
+		} else {
+			req.flash("err_msg", "Password 확인이 일치하지 않습니다.");
+			length++;
+			res.render('mypage', {
+				mode : "chgPass",
+				title : 'Recomics',
+				err_msg : req.flash("err_msg"),
+				length : length
+			});
+		}
+	} else {
+		res.send("잘못된 접근");
+	}
+};

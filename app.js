@@ -65,6 +65,7 @@ app.get('/search', routes.search);
 app.post('/login', routes.loginpost);
 app.get('/login', routes.login);
 app.get('/mypage', routes.mypage);
+app.post('/mypage', routes.mypagepost);
 app.get('/logout', routes.logout);
 app.get('/signout', routes.signout);
 app.get('/bookinfo', routes.bookinfo);
