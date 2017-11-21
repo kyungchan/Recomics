@@ -14,19 +14,25 @@
 			}
 		}
 		 $(document).ready(function(){
-			 $('#rateSuccess').hide(0);
-		  $('#rateBtn').click( function() {
-	          $.ajax({        
+			$('#rateSuccess').hide(0);
+		 	$('#rateBtn').click( function() {
+	        	$.ajax({        
 	              url: '/rating',
 	              dataType: 'json',
 	              type: 'POST',
 	              data: {'rate':$(":input:radio[name=rate]:checked").val(), 
 	            	  'bookId':$('#bookId').val(), 
 	            	  'genre':$('#genre').val(), 
-	            	  'before':$('#before').val()
+	            	  'before':$('#before').val(),
+	            	  'people':$('#people').val(), 
+	            	  'score':$('#score').val()
 	            	  },
 	              success: function(result) {
 	            	  if(result['result']==true){
+	            		  $('#starRate').text("★ " + result['avg'] + " (" + result['people'] + "명)");
+	            		  $('#score').val(result['score']);
+	            		  $('#people').val(result['people']);
+	            		  $('#before').val(result['rate']);
 	            		  $('#rateSuccess').hide(0);
 	            		  $('#rateSuccess').show("fast");
 	            	  }
@@ -111,24 +117,31 @@
 		  <div class="card-body">
 		   
             <h3><%=book[0].title%></h3>
+            <h6 class="text-secondary" id="starRate">★ <%=String(book[0].avg).substring(0,3)%> (<%=book[0].people%>명)</h6>
             <% if(isAuthenticated){ %>
-            <div class="acidjs-rating-stars">
-              
-	                <div>
-	                    <input type="radio" <% if(rate == 5){ %> checked="checked" <%}%>name="rate" id="group-2-0" value="5" /><label for="group-2-0"></label>
-	                    <input type="radio" <% if(rate == 4){ %> checked="checked" <%}%>name="rate" id="group-2-1" value="4" /><label for="group-2-1"></label>
-	                    <input type="radio" <% if(rate == 3){ %> checked="checked" <%}%>name="rate" id="group-2-2" value="3" /><label for="group-2-2"></label>
-	                    <input type="radio" <% if(rate == 2){ %> checked="checked" <%}%>name="rate" id="group-2-3" value="2" /><label for="group-2-3"></label>
-	                    <input type="radio" <% if(rate == 1 || rate == 0){ %> checked="checked" <%}%> name="rate" id="group-2-4"  value="1" /><label for="group-2-4"></label>
-	                    <input type="hidden" id="bookId" name="bookId" value="<%=book[0].index%>">
-	                    <input type="hidden" id="genre" name="genre" value="<%=book[0].genre%>">
-	                    <input type="hidden" id="before" name="before" value="<%=rate%>">
-	                </div>
-	                <button id="rateBtn" class="btn btn-secondary">적용</button>
-	                
-            <a href="javascript:history.go(-1)" class="text-primary" style="position:absolute; right:20px; top:20px;">뒤로가기</a>  
-	                <div id="rateSuccess" class="text-success" style="position:absolute; top:65px; left:280px;">적용완료</div>
-             
+            <div style="display: inline-block;">
+                <div>
+		            <fieldset class="rating">
+					    <input type="radio" <% if(rate == 5){ %> checked="checked" <%}%> id="star5" name="rate" value="5" /><label class = "full" for="star5" title="5.0"></label>
+					    <input type="radio" <% if(rate == 4.5){ %> checked="checked" <%}%> id="star4half" name="rate" value="4.5" /><label class="half" for="star4half" title="4.5"></label>
+					    <input type="radio" <% if(rate == 4){ %> checked="checked" <%}%> id="star4" name="rate" value="4" /><label class = "full" for="star4" title="4.0"></label>
+					    <input type="radio" <% if(rate == 3.5){ %> checked="checked" <%}%> id="star3half" name="rate" value="3.5" /><label class="half" for="star3half" title="3.5"></label>
+					    <input type="radio" <% if(rate == 3){ %> checked="checked" <%}%> id="star3" name="rate" value="3" /><label class = "full" for="star3" title="3.0"></label>
+					    <input type="radio" <% if(rate == 2.5){ %> checked="checked" <%}%> id="star2half" name="rate" value="2.5" /><label class="half" for="star2half" title="2.5"></label>
+					    <input type="radio" <% if(rate == 2){ %> checked="checked" <%}%> id="star2" name="rate" value="2" /><label class = "full" for="star2" title="2.0"></label>
+					    <input type="radio" <% if(rate == 1.5){ %> checked="checked" <%}%>id="star1half" name="rate" value="1.5" /><label class="half" for="star1half" title="1.5"></label>
+					    <input type="radio" <% if(rate == 1){ %> checked="checked" <%}%> id="star1" name="rate" value="1" /><label class = "full" for="star1" title="1.0"></label>
+					    <input type="radio" <% if(rate == 0.5 || rate == 0){ %> checked="checked" <%}%> id="starhalf" name="rate" value="half" /><label class="half" for="starhalf" title="0.5"></label>
+					</fieldset>
+                    <input type="hidden" id="bookId" name="bookId" value="<%=book[0].index%>">
+                    <input type="hidden" id="genre" name="genre" value="<%=book[0].genre%>">
+                    <input type="hidden" id="before" name="before" value="<%=rate%>">
+                    <input type="hidden" id="people" name="people" value="<%=book[0].people%>">
+                    <input type="hidden" id="score" name="score" value="<%=book[0].score%>">
+                </div>
+                <button id="rateBtn" class="btn btn-secondary" style="position:absolute; left:185px; top:85px;">적용</button>
+	            <a href="javascript:history.go(-1)" class="text-primary" style="position:absolute; right:20px; top:20px;">뒤로가기</a>  
+		        <div id="rateSuccess" class="text-success" style="position:absolute; top:90px; left:255px;">적용완료</div>
             </div>               
             <% } %>
             <hr>

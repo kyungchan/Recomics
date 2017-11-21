@@ -121,8 +121,9 @@ exports.index = function(req, res) {
 
 exports.explore = function(req, res) {
 	var type = req.query.type || "genre";
-	var value;
+	var view = req.query.view || "grid";
 	var sort = req.query.sort || "titleasc";
+	var value;
 	var dataType;
 	switch(type){
 	case "genre":
@@ -164,6 +165,16 @@ exports.explore = function(req, res) {
 								bst.insert(books[i].author, books[i], 0);
 							}
 							break;
+						case "scoreasc":
+							for(var i = 0; i < books.length; i++){
+								bst.insert(books[i].avg, books[i], 1);
+							}
+							break;
+						case "scoredsc":
+							for(var i = 0; i < books.length; i++){
+								bst.insert(books[i].avg, books[i], 0);
+							}
+							break;
 						}
 						bst.inOrder(bst.root, jsonAry);
 						res.render('explore', {
@@ -172,7 +183,8 @@ exports.explore = function(req, res) {
 							type: type,
 							value: value,
 							count: count,
-							sort: sort
+							sort: sort,
+							view: view
 						});
 					}
 				});
@@ -218,6 +230,16 @@ exports.explore = function(req, res) {
 								bst.insert(books[i].author, books[i], 0);
 							}
 							break;
+						case "scoreasc":
+							for(var i = 0; i < books.length; i++){
+								bst.insert(books[i].avg, books[i], 1);
+							}
+							break;
+						case "scoredsc":
+							for(var i = 0; i < books.length; i++){
+								bst.insert(books[i].avg, books[i], 0);
+							}
+							break;
 						}
 						bst.inOrder(bst.root, jsonAry);
 						res.render('explore', {
@@ -226,7 +248,8 @@ exports.explore = function(req, res) {
 							type: type,
 							value: value,
 							count: count,
-							sort: sort
+							sort: sort,
+							view: view
 						});
 					}
 				});
@@ -272,6 +295,16 @@ exports.explore = function(req, res) {
 								bst.insert(books[i].author, books[i], 0);
 							}
 							break;
+						case "scoreasc":
+							for(var i = 0; i < books.length; i++){
+								bst.insert(books[i].avg, books[i], 1);
+							}
+							break;
+						case "scoredsc":
+							for(var i = 0; i < books.length; i++){
+								bst.insert(books[i].avg, books[i], 0);
+							}
+							break;
 						}
 						bst.inOrder(bst.root, jsonAry);
 						res.render('explore', {
@@ -280,7 +313,8 @@ exports.explore = function(req, res) {
 							type: type,
 							value: value,
 							count: count,
-							sort: sort
+							sort: sort,
+							view: view
 						});
 					}
 				});
@@ -339,36 +373,55 @@ exports.recommend = function(req, res) {
 				var jsonString = "{\"genre\":\"" + rankAry[0][2].substr(4)+"\"}";
 				Book.aggregate([{$match:{genre : rankAry[0][2].substr(4)}},{$sample:{size:size*weight[0]/totalWeight}}]).exec(function(err, result){
 					for(var i = 0; i<result.length; i++){
-						recomdAry.push(result[i]);
+						recomdBst.insert(result[i].avg, result[i], 0);
+					//	recomdAry.push(result[i]);
 					}
+					recomdBst.inOrder(recomdBst.root, recomdAry);
+					recomdBst = new BST();
 					size -= result.length;
 					totalWeight -= weight[0];
 					console.log(size);
 					Book.aggregate([{$match:{genre : rankAry[1][2].substr(4)}},{$sample:{size:size*weight[1]/totalWeight}}]).exec(function(err, result){
 						for(var i = 0; i<result.length; i++){
-							recomdAry.push(result[i]);
+
+							recomdBst.insert(result[i].avg, result[i], 0);
+						//	recomdAry.push(result[i]);
 						}
+						recomdBst.inOrder(recomdBst.root, recomdAry);
+						recomdBst = new BST();
 						size -= result.length;
 						totalWeight -= weight[1];
 						console.log(size);
 						Book.aggregate([{$match:{genre : rankAry[2][2].substr(4)}},{$sample:{size:size*weight[2]/totalWeight}}]).exec(function(err, result){
 							for(var i = 0; i<result.length; i++){
-								recomdAry.push(result[i]);
+
+								recomdBst.insert(result[i].avg, result[i], 0);
+							//	recomdAry.push(result[i]);
 							}
+							recomdBst.inOrder(recomdBst.root, recomdAry);
+							recomdBst = new BST();
 							size -= result.length;
 							totalWeight -= weight[2];
 							console.log(size);
 							Book.aggregate([{$match:{genre : rankAry[3][2].substr(4)}},{$sample:{size:size*weight[3]/totalWeight}}]).exec(function(err, result){
 								for(var i = 0; i<result.length; i++){
-									recomdAry.push(result[i]);
+
+									recomdBst.insert(result[i].avg, result[i], 0);
+								//	recomdAry.push(result[i]);
 								}
+								recomdBst.inOrder(recomdBst.root, recomdAry);
+								recomdBst = new BST();
 								size -= result.length;
 								totalWeight -= weight[3];
 								console.log(size);
 								Book.aggregate([{$match:{genre : rankAry[4][2].substr(4)}},{$sample:{size:size*weight[4]/totalWeight}}]).exec(function(err, result){
 									for(var i = 0; i<result.length; i++){
-										recomdAry.push(result[i]);
+
+										recomdBst.insert(result[i].avg, result[i], 0);
+										//recomdAry.push(result[i]);
 									}
+									recomdBst.inOrder(recomdBst.root, recomdAry);
+									recomdBst = new BST();
 									Rate.count({userId: req.user.id}, function(err, result){
 										res.render('recommend', {
 											title : 'Recomics',
@@ -445,24 +498,49 @@ exports.rating = function(req, res){
 	var rate = req.body.rate;
 	var bookId = req.body.bookId;
 	var genre = req.body.genre;
+	var people = req.body.people;
+	var score = req.body.score;
 	var beforeRate = req.body.before;
-	console.log(rate + genre);
+	rate *= 1;
+	score *= 1;
+	beforeRate *= 1;
 	if (rate >= 1 && rate <= 5){
 		Rate.update({userId: req.user.id, bookId: bookId, genre: genre}, {$set : {rate: rate}}, {upsert: true}, function(err){
 			if(!err){
 				var jsonString = '{"$inc": {"rate' + genre + '":' + (rate-beforeRate) + '}}';
+				console.log(jsonString);
 				User.update({id: req.user.id}, JSON.parse(jsonString), function(err){
 					if(!err){
-						res.send({result:true});
+						jsonString = '{"$inc": {"score":' + (rate-beforeRate) + '';
+						score += rate - beforeRate;
+						if(beforeRate==0){
+							jsonString += ', "people": 1}, "$set": {"avg": ' + ((score) / (++people)) + '}}';
+						} else {
+							jsonString += '}, "$set": {"avg": ' + ((score) / (people)) + '}, "upsert": true}';
+						}
+						console.log(jsonString);
+						Book.update({index: bookId},JSON.parse(jsonString), function(err){
+							if(!err){
+								var avg = String(score/people).slice(0, 3);
+								res.send({result:true, score:score, people:people, avg:avg, rate:rate});	
+							} else {
+								console.log(jsonString);
+								console.log(err);
+								res.send("잘못된 접근" + err);
+							}
+						});
 					} else {
+						console.log(err);
 						res.send("잘못된 접근" + err);
 					}
 				});
 			} else {
+				console.log(err);
 				res.send("잘못된 접근" + err);
 			}
 		});
 	} else {
+		console.log(err);
 		res.send("잘못된 접근");
 	}
 }

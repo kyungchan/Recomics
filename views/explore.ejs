@@ -25,7 +25,7 @@
 		        <a class="nav-link"  href="/recommend">만화추천</a>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="/explore">만화검색</a>
+		        <a class="nav-link active" href="/explore">만화검색</a>
 		      </li>
 		    </ul>
 		    
@@ -162,17 +162,67 @@
 		</div>
 	</div>
 	<div class="container">
-	
-		<div class="text-right"><a href="/explore?type=<%=type%>&value=<%=value%>&sort=<% if(sort=="titleasc"){ %>titledsc<% }else{ %>titleasc<% } %>" 
+		<div style="position:absolute">
+			<a href="/explore?type=<%=type%>&value=<%=value%>&view=grid&sort=<%=sort%>%>" 
+			 class=<% if(view=="grid"){ %> "text-primary"<% }else{ %> "text-secondary"<% } %>>그리드뷰</a>
+			<a href="/explore?type=<%=type%>&value=<%=value%>&view=list&sort=<%=sort%>%>" 
+			 class=<% if(view=="list"){ %> "text-primary"<% }else{ %> "text-secondary"<% } %>>리스트뷰</a>
+		</div>
+		<div class="text-right">
+		<a href="/explore?type=<%=type%>&value=<%=value%>&view=<%=view%>&sort=<% if(sort=="titleasc"){ %>titledsc<% }else{ %>titleasc<% } %>" 
 		class=<% if(sort=="titleasc" || sort=="titledsc"){ %> "text-primary"<% }else{ %> "text-secondary"<% } %>><% if(sort=="titleasc"){ %>제목순↑
 		<% }else if(sort=="titledsc"){ %>제목순↓<% }else{ %>제목순<%}%></a>
-		<a href="/explore?type=<%=type%>&value=<%=value%>&sort=<% if(sort=="addasc"){ %>adddsc<% }else{ %>addasc<% } %>" 
+		<a href="/explore?type=<%=type%>&value=<%=value%>&view=<%=view%>&sort=<% if(sort=="addasc"){ %>adddsc<% }else{ %>addasc<% } %>" 
 		class=<% if(sort=="addasc" || sort=="adddsc"){ %> "text-primary"<% }else{ %> "text-secondary"<% } %>><% if(sort=="addasc"){ %>등록순↑<% }else if(sort=="adddsc"){ %>등록순↓
 		<% }else{ %>등록순<%}%></a>
-		<a href="/explore?type=<%=type%>&value=<%=value%>&sort=<% if(sort=="authasc"){ %>authdsc<% }else{ %>authasc<% } %>" 
+		<a href="/explore?type=<%=type%>&value=<%=value%>&view=<%=view%>&sort=<% if(sort=="authasc"){ %>authdsc<% }else{ %>authasc<% } %>" 
 		class=<% if(sort=="authasc" || sort=="authdsc"){ %> "text-primary"<% }else{ %> "text-secondary"<% } %>><% if(sort=="authasc"){ %>작가순↑<% }else if(sort=="authdsc"){ %>작가순↓
 		<% }else{ %>작가순<%}%></a>
+		<a href="/explore?type=<%=type%>&value=<%=value%>&view=<%=view%>&sort=<% if(sort=="scoreasc"){ %>scoredsc<% }else{ %>scoreasc<% } %>" 
+		class=<% if(sort=="scoreasc" || sort=="scoredsc"){ %> "text-primary"<% }else{ %> "text-secondary"<% } %>><% if(sort=="scoreasc"){ %>평점순↑<% }else if(sort=="scoredsc"){ %>평점순↓
+		<% }else{ %>평점순<%}%></a>
 		</div>
+		<% if(view=="list") { %>
+		<table class="table table-hover">
+		  <thead>
+		    <tr>
+		      <th>#</th>
+		      <th>표지</th>
+		      <th>작품명</th>
+		      <th>평점</th>
+		      <th>작가</th>
+		      <th>장르</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		  <% for(var i=0; i<books.length; i++){ %>
+		  
+		    <tr onclick="location.href='/bookinfo?book_id=<%=books[i].index%>'" style="cursor:pointer;" >
+		    
+		      <th scope="row"><%=i+1%></th>
+		      <td><img style="height: 50px" src="/img/bookcover/<%=books[i].index%>.jpg"></td>
+		      <td><%= books[i].title %></td>
+		      
+		      <td><%=String(books[i].avg).substring(0,3)%></td>
+		      <td><%= books[i].author %></td>
+		      <td><% if (books[i].genre=="Action"){ %>액션
+							    <% } else if (books[i].genre=="Comic"){ %>코믹
+							    <% } else if (books[i].genre=="Cooking"){ %>요리
+							    <% } else if (books[i].genre=="Daylife"){ %>일상
+							    <% } else if (books[i].genre=="Drama"){ %>드라마
+							    <% } else if (books[i].genre=="Fantasy"){ %>판타지
+							    <% } else if (books[i].genre=="Gamble"){ %>도박
+							    <% } else if (books[i].genre=="Heroism"){ %>무협
+							    <% } else if (books[i].genre=="Pure"){ %>순정
+							    <% } else if (books[i].genre=="SF"){ %>SF
+							    <% } else if (books[i].genre=="Sports"){ %>스포츠
+							    <% } else if (books[i].genre=="Thriller"){ %>스릴러 
+							    <% } %></td>
+		    </tr>
+		    <%}%>
+		  </tbody>
+		</table>
+		<% } else { %>
 		<div class="container-fluid">
 		    <div class="row">
 		    	<% for(var i = 0; i<count; i++){ %>
@@ -183,7 +233,7 @@
 					  </tr>
 					  <tr>
 					    <td class="align-middle">
-						    <strong><%=books[i].title%></strong>
+						    <strong><%=books[i].title%></strong><br>★<%=String(books[i].avg).substring(0,3)%>
 						    <br>
 						    <div class="text-secondary">
 							    <%=books[i].author%>
@@ -208,7 +258,6 @@
 							    <% } else if (books[i].genre=="Sports"){ %>스포츠
 							    <% } else if (books[i].genre=="Thriller"){ %>스릴러 
 							    <% } %>
-							    <!--  <% if(books[i].genre2) {%>/<%=books[i].genre2%><% } %><% if(books[i].genre3) {%>/<%=books[i].genre3%><% } %>-->
 						    </div>
 					    </td>
 					  </tr>
@@ -223,6 +272,7 @@
 					<p data-toggle="modal" data-target="#tallModal" style="padding:10px; color:#fff;" class="bg-dark img-circle">?</p>
 				</a>
 		</div>
+		<% } %>
 		<hr>
       <footer>
         <p>&copy; 팀프로젝트 5조</p>
